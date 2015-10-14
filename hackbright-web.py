@@ -30,20 +30,32 @@ def get_add_student():
     return render_template("student_add.html")
 
 
-@app.route("/add_student")
+@app.route("/add_student", methods=["POST"]) #this can be a list and its methods can take multiple methods
 def add_student():
-    
-    first_name = request.args.get('first_name')
-    last_name = request.args.get('last_name')
-    github = request.args.get('github')
+    # if request.method == "GET": (this is WAY#1 of having 2 forms end in the same route)
 
-    first_name, last_name, github = hackbright.make_new_student(first_name,last_name,github)
+    first_name = request.form['first_name']     #.get('first_name')]
+    last_name = request.form['last_name']                        #.get('last_name')
+    github = request.form['github']                    #get('github')
+
+    #success = hackbright.make_new_student(first_name,last_name,github) (another way of testing)
+    hackbright.make_new_student(first_name,last_name,github)
+
+     #whether or not we return something
+    # first_name, last_name, github = hackbright.make_new_student(first_name,last_name,github)
     html = render_template('student_add_confirm.html',
-                            first=first_name,
-                            last=last_name,
+                            first_name=first_name,
+                            last_name=last_name,
                             github=github)
     return html
 
+
+# @app.route("/joel", methods=["GET"]) WAY#2:we can create same app route with 2 functions. 
+#     ...
+
+# @app.route("/joel", methods=["POST"])
+# def joel_post():
+#     ...
 
 
 
